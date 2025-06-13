@@ -4,7 +4,12 @@ import React, { useState } from "react";
 import { Upload, FileText, X } from "lucide-react";
 import { UploadedFile } from "./types";
 
-export default function FileUploadZone() {
+interface FileUploadZoneProps {
+    type: string;
+    inputId: string;
+}
+
+export default function FileUploadZone({ type, inputId }: FileUploadZoneProps) {
   const [file, setFile] = useState<UploadedFile | null>(null);
 
   const handleFileUpload = (files: FileList | null) => {
@@ -34,23 +39,25 @@ export default function FileUploadZone() {
 
   return (
     <>
-        {!file ? (
-        <div className="relative h-[263px] border-2 border-dashed border-blue-300 rounded-lg p-8 text-center hover:border-blue-400 transition-colors cursor-pointer">
+        {!file ? ( 
+        <div className="h-[263px] border-2 border-dashed border-blue-300 rounded-lg p-8 text-center hover:border-blue-400 transition-colors cursor-pointer">
             <Upload className="h-12 w-12 text-blue-400 mx-auto mb-4" />
-            <p className="text-blue-700 text-xl font-bold mb-2">Click to upload referral package</p>
+            <p className="text-blue-700 text-xl font-bold mb-2">Click to upload {type}</p>
             <p className="text-medium text-blue-500">PDF files only</p>
-            <div className="absolute inset-0 z-10" onClick={() => document.getElementById("referral-package-input")?.click()}>
+            <label htmlFor={inputId} className="absolute inset-0 z-10 cursor-pointer" />
                 <input
-                id="referral-package-input"
+                id={inputId}
                 type="file"
                 accept=".pdf"
                 className="hidden"
-                onChange={(e) => handleFileUpload(e.target.files)}
+                onChange={(e) => {
+                    handleFileUpload(e.target.files);
+                    e.target.value = "";
+                }}
                 />
-            </div>
         </div>
       ) : (
-        <div className="flex items-center justify-between bg-blue-50 h-[100px] border-1 border-blue-300 rounded-lg p-8 text-center hover:border-blue-400 transition-colors">
+        <div className="flex items-center justify-between bg-blue-50 h-[100px] border border-blue-300 rounded-lg p-8 text-center hover:border-blue-400 transition-colors">
             <div className="flex items-center gap-3">
                 <FileText className="h-8 w-8 text-blue-600" />
                 <div className="flex flex-col items-start">

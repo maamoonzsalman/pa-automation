@@ -14,7 +14,6 @@ export default function Home() {
             <UploadPAForm/>
             <UploadReferralForm/>
           </div>
-
         </div>
     </div>
   );
